@@ -25,6 +25,7 @@ public class ImageLoader {
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+	private Map<ImageView, Integer> defalutBitMaps = Collections.synchronizedMap(new WeakHashMap<ImageView, Integer>());
     ExecutorService executorService;
     Handler handler=new Handler();//handler to display images in UI thread
     
@@ -33,17 +34,18 @@ public class ImageLoader {
         executorService=Executors.newFixedThreadPool(5);
     }
     
-    final int stub_id=R.drawable.stub;
-    public void DisplayImage(String url, ImageView imageView)
+//    final int stub_id=R.drawable.stub;
+    public void DisplayImage(String url, ImageView imageView, int defaultImage)
     {
         imageViews.put(imageView, url);
+        defalutBitMaps.put(imageView, defaultImage);
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
         else
         {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
+            imageView.setImageResource(defalutBitMaps.get(imageView));
         }
     }
         
@@ -176,7 +178,7 @@ public class ImageLoader {
             if(bitmap!=null)
                 photoToLoad.imageView.setImageBitmap(bitmap);
             else
-                photoToLoad.imageView.setImageResource(stub_id);
+                photoToLoad.imageView.setImageResource(defalutBitMaps.get(photoToLoad.imageView));
         }
     }
 
