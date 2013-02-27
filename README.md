@@ -10,7 +10,7 @@ Originally published <a href="http://stackoverflow.com/questions/541966/android-
 ``` java
 ImageLoader imageLoader=new ImageLoader(context);
 ...
-imageLoader.DisplayImage(url, imageView);
+imageLoader.DisplayImage(url, imageView, stubImageId);
 ```
 Don't forget to add the following permissions to your AndroidManifest.xml:
 
